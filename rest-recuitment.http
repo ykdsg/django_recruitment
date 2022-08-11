@@ -1,0 +1,49 @@
+
+# 创建相应的数据
+POST http://localhost:8000/book/api/books/
+Content-Type: application/x-www-form-urlencoded
+
+name=helloBook&author=yk
+
+<> 2022-04-24T210224.201.json
+<> 2022-04-24T205858.500.html
+
+###
+
+#查询数据
+GET http://localhost:8000/book/api/books
+Accept: application/json
+
+<> 2022-04-24T210244.200.json
+<> 2022-04-24T205234.200.json
+
+###
+
+
+
+GET http://127.0.0.1:8000/snip/snippets/
+Accept: application/json
+
+
+###
+
+POST http://127.0.0.1:8000/snip/snippets/
+Content-Type: application/json
+
+{
+  "code": "hello"
+}
+
+###
+
+
+GET http://127.0.0.1:8000/snip/snippets/1
+Accept: application/json
+
+###
+
+
+GET http://127.0.0.1:8000/snip/snippets/1.json
+Accept: application/json
+
+###
