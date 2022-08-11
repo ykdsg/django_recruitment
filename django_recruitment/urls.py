@@ -20,8 +20,7 @@ from django.urls import path, include
 from jobs import views
 
 urlpatterns = [
-    url(r"^jobList/",views.joblsit,name="jobList"),
-    url(r"^job/(?P<job_id>\d+)/$",views.detail,name="detail"),
+    url(r"job/",include('jobs.urls')),
     url(r"^snip/",include('snippets.urls')),
 
 
