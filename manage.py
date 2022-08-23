@@ -5,7 +5,8 @@ import sys
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_recruitment.settings')
+    # 如果启动参数设置了--settings ，相当于DJANGO_SETTINGS_MODULE 已经有值，下面的这行就不会生效。
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.base')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

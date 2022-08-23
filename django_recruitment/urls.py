@@ -16,12 +16,20 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+# from jobs import views
 
-from jobs import views
+import quickstart.views
+
+router = routers.DefaultRouter()
+router.register(r'users', quickstart.views.UserViewSet)
+router.register(r'groups', quickstart.views.GroupViewSet)
 
 urlpatterns = [
     url(r"job/",include('jobs.urls')),
     url(r"^snip/",include('snippets.urls')),
+    # 使用的是viewsets而不是views，所以可以通过简单地使用路由器类注册视图来自动生成API的URL conf。
+    url(r"^",include(router.urls)),
 
 
 

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from snippets.models import LANGUAGE_CHOICES, STYLE_CHOICES, Snippet
@@ -7,11 +8,16 @@ from snippets.models import LANGUAGE_CHOICES, STYLE_CHOICES, Snippet
 # 一组自动确定的字段。
 # 默认简单实现的create()和update()方法。
 class SnippetSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
+    highlight = serializers.HyperlinkedIdentityField(view_name='snippet-highlight', format='html')
+
     class Meta:
         model = Snippet
-        fields = ('id', 'title', 'code', 'linenos', 'language', 'style')
+        fields = ('url', 'id', 'highlight', 'owner',
+                  'title', 'code', 'linenos', 'language', 'style')
 
 
+# SnippetSerializer类中重复了很多包含在Snippet模型类（model）中的信息。可以使用ModelSerializer来简化
 # class SnippetSerializer(serializers.Serializer):
 #     # 定义了序列化/反序列化的字段
 #     id=serializers.IntegerField(read_only=True)
@@ -42,3 +48,13 @@ class SnippetSerializer(serializers.ModelSerializer):
 #         instance.style = validated_data.get('style', instance.style)
 #         instance.save()
 #         return instance
+
+
+class UserSerializer(serializers.ModelSerializer):
+    # 因为'snippets' 在用户模型中是一个反向关联关系。在使用 ModelSerializer 类时它默认不会被包含，所以我们需要为它添加一个显式字段。
+    # snippets = serializers.PrimaryKeyRelatedField(many=True,queryset=Snippet.objects.all())
+    snippets = serializers.HyperlinkedRelatedField(many=True, view_name='snippet-detail', read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('url', 'id', 'username', 'snippets')
